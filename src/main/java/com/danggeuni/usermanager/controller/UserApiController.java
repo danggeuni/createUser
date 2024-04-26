@@ -41,10 +41,10 @@ public class UserApiController {
         return ResponseEntity.ok().body(userResponseDto);
     }
 
-    @PutMapping("/api/user/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable long id, @RequestBody UpdateUserRequestDto updateUserRequestDto) {
+    @PutMapping("/api/user/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable String userId, @RequestBody UpdateUserRequestDto updateUserRequestDto) {
         try {
-            UserEntity update = userService.update(id, updateUserRequestDto);
+            UserEntity update = userService.update(userId, updateUserRequestDto);
             UpdateUserResponseDto updateUserResponseDto = new UpdateUserResponseDto(update.getNickname(), update.getName(), update.getPhone(), update.getEmail());
             return ResponseEntity.ok().body(updateUserResponseDto);
         } catch (Exception e) {

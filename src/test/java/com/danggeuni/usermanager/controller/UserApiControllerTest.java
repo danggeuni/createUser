@@ -42,11 +42,11 @@ class UserApiControllerTest {
         Encryption encryption = new Encryption();
 
         // case : success
-        RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId",encryption.getEncrypt("password"), "12345", "name", "010-1234-5678", "1@naver.com");
+        RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId1",encryption.getEncrypt("password"), "12345", "name", "010-1234-5678", "1@naver.com");
         // case : failed
-        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId","password", "123456789123456789", "name", "010-1234-5678", "1@naver.com");
-        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId", "password", "12345", "name", "010-71234-5678", "1@naver.com");
-        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId", "password", "12345", "name", "010-1234-5678", "1navercom");
+        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId2","password", "123456789123456789", "name", "010-1234-5678", "1@naver.com");
+        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId3", "password", "12345", "name", "010-71234-5678", "1@naver.com");
+        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId4", "password", "12345", "name", "010-1234-5678", "1navercom");
 
         // when
         userService.joinUser(userRequestDto);
@@ -55,6 +55,7 @@ class UserApiControllerTest {
         Optional<UserEntity> result = userRepository.findById(1L);
 
         assertThat(result.isPresent()).isTrue();
+        assertThat(result.get().getUserId()).isEqualTo(userRequestDto.getUserId());
         assertThat(result.get().getPassword()).isEqualTo(encryption.getEncrypt("password"));
         assertThat(result.get().getNickname()).isEqualTo(userRequestDto.getNickname());
         assertThat(result.get().getPhone()).isEqualTo(userRequestDto.getPhone());
@@ -95,7 +96,7 @@ class UserApiControllerTest {
         String pwd = encryption.getEncrypt(userRequestDto.getPassword());
 
         // when
-        UserEntity user = userService.update(1L, userRequestDto);
+        UserEntity user = userService.update("testId", userRequestDto);
 
         // then
         assertThat(user.getPassword()).isEqualTo(pwd);

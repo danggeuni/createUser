@@ -30,9 +30,15 @@ public class UserService {
     public void joinUser(RegisterUserRequestDto user) {
         UserEntity userData = user.toEntity();
 
+        // userId 중복 검사
+        UserEntity isExistUserId = userRepository.findByUserId(userData.getUserId());
+        if(isExistUserId != null) {
+            throw new IllegalArgumentException("이미 가입된 사용자 아이디 입니다.");
+        }
+
         // email 중복 검사
-        UserEntity isExist = userRepository.findByEmail(userData.getEmail());
-        if(isExist != null) {
+        UserEntity isExistEmail = userRepository.findByEmail(userData.getEmail());
+        if(isExistEmail != null) {
             throw new IllegalArgumentException("이미 가입된 이메일 주소입니다.");
         }
 
@@ -72,10 +78,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity update(long id, UpdateUserRequestDto dto) {
+    public UserEntity update(String userId, UpdateUserRequestDto dto) {
 
-        // 아이디 존재 유무 확인
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다. : " + id));
+        UserEntity user = userRepository.findByUserId(userId);
+        System.out.println(user + "존재합니까");
 
         // nickname 길이 제한
         if(dto.getNickname().length() > 15) {
