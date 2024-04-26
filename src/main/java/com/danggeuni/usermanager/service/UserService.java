@@ -68,13 +68,16 @@ public class UserService {
     }
 
     public Page<UserResponseDto> findUsers(int page, int pageSize, String sort) {
-        int sendPage = page - 1;
+        if(sort.equals("id") | sort.equals("name")) {
+            int sendPage = page - 1;
+            // 비밀번호 제거 (Entity > DTO 변경)
+            Page<UserEntity> lists = userRepository.findAll(PageRequest.of(sendPage, pageSize, Sort.by(Sort.Direction.ASC, sort)));
+            Page<UserResponseDto> userResponseDto = lists.map(user -> new UserResponseDto(user.getId(), user.getUserId(), user.getNickname(), user.getName(), user.getPhone(), user.getEmail()));
 
-        // 비밀번호 제거 (Entity > DTO 변경)
-        Page<UserEntity> lists = userRepository.findAll(PageRequest.of(sendPage, pageSize, Sort.by(Sort.Direction.ASC, sort)));
-        Page<UserResponseDto> userResponseDto = lists.map(user -> new UserResponseDto(user.getId(), user.getUserId(), user.getNickname(), user.getName(), user.getPhone(), user.getEmail()));
-
-        return userResponseDto;
+            return userResponseDto;
+        } else {
+            throw new IllegalArgumentException("올바르지 않은 요청입니다.");
+        }
     }
 
     @Transactional

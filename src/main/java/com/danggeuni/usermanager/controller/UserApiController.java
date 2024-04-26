@@ -33,12 +33,16 @@ public class UserApiController {
     }
 
     @GetMapping("/api/user/list")
-    public ResponseEntity<Page<UserResponseDto>> getUsers(@RequestParam(required = false, defaultValue = "1") int page,
+    public ResponseEntity<?> getUsers(@RequestParam(required = false, defaultValue = "1") int page,
                                                           @RequestParam(required = false, defaultValue = "5") int pageSize,
                                                           @RequestParam(required = false, defaultValue = "id") String sort) {
-        Page<UserResponseDto> userResponseDto = userService.findUsers(page, pageSize, sort);
-
-        return ResponseEntity.ok().body(userResponseDto);
+        try {
+            Page<UserResponseDto> userResponseDto = userService.findUsers(page, pageSize, sort);
+            return ResponseEntity.ok().body(userResponseDto);
+        } catch (Exception e) {
+            log.error("에러 발생", e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/api/user/{userId}")
