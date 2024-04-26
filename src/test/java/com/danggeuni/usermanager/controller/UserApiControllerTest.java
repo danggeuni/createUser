@@ -65,8 +65,8 @@ class UserApiControllerTest {
     @DisplayName("selectAll : 회원 정보 조회 성공")
     public void selectAllTest() throws Exception {
         // given
-        UserEntity entity1 = new UserEntity(1L, "testId", "password", "nickname", "name", "010-1234-5678", "1@naver.com", LocalDateTime.now(), LocalDateTime.now());
-        UserEntity entity2 = new UserEntity(2L, "testId", "password", "nickname", "name", "010-1234-5678", "2@naver.com", LocalDateTime.now(), LocalDateTime.now());
+        UserEntity entity1 = new UserEntity(1L, "testId1", "password", "nickname", "name", "010-1234-5678", "1@naver.com", LocalDateTime.now(), LocalDateTime.now());
+        UserEntity entity2 = new UserEntity(2L, "testId2", "password", "nickname", "name", "010-1234-5678", "2@naver.com", LocalDateTime.now(), LocalDateTime.now());
 
         // when
         userRepository.save(entity1);
