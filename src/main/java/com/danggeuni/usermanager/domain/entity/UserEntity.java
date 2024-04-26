@@ -17,6 +17,9 @@ public class UserEntity {
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "userId", nullable = false, unique = true, updatable = false)
+    private String userId;
+
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -39,8 +42,9 @@ public class UserEntity {
     private LocalDateTime updateDate;
 
 
-    public UserEntity(Long id, String password, String nickname, String name, String phone, String email, LocalDateTime createdDate, LocalDateTime updateDate) {
+    public UserEntity(Long id, String userId, String password, String nickname, String name, String phone, String email, LocalDateTime createdDate, LocalDateTime updateDate) {
         this.id = id;
+        this.userId = userId;
         this.password = password;
         this.nickname = nickname;
         this.name = name;

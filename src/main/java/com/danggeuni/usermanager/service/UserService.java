@@ -66,7 +66,7 @@ public class UserService {
 
         // 비밀번호 제거 (Entity > DTO 변경)
         Page<UserEntity> lists = userRepository.findAll(PageRequest.of(sendPage, pageSize, Sort.by(Sort.Direction.ASC, sort)));
-        Page<UserResponseDto> userResponseDto = lists.map(user -> new UserResponseDto(user.getId(), user.getNickname(), user.getName(), user.getPhone(), user.getEmail()));
+        Page<UserResponseDto> userResponseDto = lists.map(user -> new UserResponseDto(user.getId(), user.getUserId(), user.getNickname(), user.getName(), user.getPhone(), user.getEmail()));
 
         return userResponseDto;
     }

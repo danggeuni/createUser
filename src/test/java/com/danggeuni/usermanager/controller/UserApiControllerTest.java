@@ -42,11 +42,11 @@ class UserApiControllerTest {
         Encryption encryption = new Encryption();
 
         // case : success
-        RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto(encryption.getEncrypt("password"), "12345", "name", "010-1234-5678", "1@naver.com");
+        RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId",encryption.getEncrypt("password"), "12345", "name", "010-1234-5678", "1@naver.com");
         // case : failed
-        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("password", "123456789123456789", "name", "010-1234-5678", "1@naver.com");
-        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("password", "12345", "name", "010-71234-5678", "1@naver.com");
-        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("password", "12345", "name", "010-1234-5678", "1navercom");
+        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId","password", "123456789123456789", "name", "010-1234-5678", "1@naver.com");
+        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId", "password", "12345", "name", "010-71234-5678", "1@naver.com");
+        // RegisterUserRequestDto userRequestDto = new RegisterUserRequestDto("testId", "password", "12345", "name", "010-1234-5678", "1navercom");
 
         // when
         userService.joinUser(userRequestDto);
@@ -65,8 +65,8 @@ class UserApiControllerTest {
     @DisplayName("selectAll : 회원 정보 조회 성공")
     public void selectAllTest() throws Exception {
         // given
-        UserEntity entity1 = new UserEntity(1L, "password", "nickname", "name", "010-1234-5678", "1@naver.com", LocalDateTime.now(), LocalDateTime.now());
-        UserEntity entity2 = new UserEntity(2L, "password", "nickname", "name", "010-1234-5678", "2@naver.com", LocalDateTime.now(), LocalDateTime.now());
+        UserEntity entity1 = new UserEntity(1L, "testId", "password", "nickname", "name", "010-1234-5678", "1@naver.com", LocalDateTime.now(), LocalDateTime.now());
+        UserEntity entity2 = new UserEntity(2L, "testId", "password", "nickname", "name", "010-1234-5678", "2@naver.com", LocalDateTime.now(), LocalDateTime.now());
 
         // when
         userRepository.save(entity1);
@@ -81,7 +81,7 @@ class UserApiControllerTest {
     @DisplayName("modifyUser : 회원 정보 수정 성공")
     public void modifyUserTest() throws Exception {
         // given
-        UserEntity entity = new UserEntity(1L, "password", "nickname", "name", "010-1234-5678", "1@naver.com", LocalDateTime.now(), LocalDateTime.now());
+        UserEntity entity = new UserEntity(1L, "testId", "password", "nickname", "name", "010-1234-5678", "1@naver.com", LocalDateTime.now(), LocalDateTime.now());
         userRepository.save(entity);
 
         Encryption encryption = new Encryption();
