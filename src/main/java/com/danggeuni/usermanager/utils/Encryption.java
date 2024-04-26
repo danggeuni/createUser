@@ -1,12 +1,12 @@
-package com.user.usermanager.utils;
+package com.danggeuni.usermanager.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Encryption {
-    public String salt = "createUserForProject##########";
+    private static final String salt = "createUserForProject##########";
 
-    public String getEncrypt(String pwd, String salt) {
+    public String getEncrypt(String pwd) {
 
         String result = "";
         try {
