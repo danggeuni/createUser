@@ -87,11 +87,6 @@ public class UserService {
             throw new IllegalArgumentException("유효하지 않은 전화번호 형식입니다.");
         }
 
-        // email 정규식 검증
-        if (!RegularExpression.checkEmail(dto.getEmail())) {
-            throw new IllegalArgumentException("유효하지 않은 이메일 형식입니다.");
-        }
-
         // password 암호화
         Encryption hashPwd = new Encryption();
         String newPassword = hashPwd.getEncrypt(dto.getPassword());
