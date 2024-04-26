@@ -1,4 +1,4 @@
-package com.user.usermanager.domain.entity;
+package com.danggeuni.usermanager.domain.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

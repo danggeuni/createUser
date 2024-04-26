@@ -1,11 +1,12 @@
-package com.user.usermanager.service;
+package com.danggeuni.usermanager.service;
 
-import com.user.usermanager.controller.dto.RegisterUserRequestDto;
-import com.user.usermanager.controller.dto.UpdateUserRequestDto;
-import com.user.usermanager.controller.dto.UserResponseDto;
-import com.user.usermanager.domain.entity.UserEntity;
-import com.user.usermanager.domain.repository.UserRepository;
-import com.user.usermanager.utils.Encryption;
+import com.danggeuni.usermanager.controller.dto.UpdateUserRequestDto;
+import com.danggeuni.usermanager.utils.Encryption;
+import com.danggeuni.usermanager.controller.dto.RegisterUserRequestDto;
+import com.danggeuni.usermanager.controller.dto.UserResponseDto;
+import com.danggeuni.usermanager.domain.entity.UserEntity;
+import com.danggeuni.usermanager.domain.repository.UserRepository;
+import com.danggeuni.usermanager.utils.RegularExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserRepository userRepository;
+    private RegularExpression regularExpression;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -40,23 +42,20 @@ public class UserService {
         }
 
         // phone 번호 정규식 검증
-        String phoneRegularExpression = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$";
-        if(!Pattern.matches(phoneRegularExpression, userData.getPhone())) {
+        if(!Pattern.matches(RegularExpression.PHONE, userData.getPhone())) {
             throw new IllegalArgumentException("유효하지 않은 전화번호 형식입니다.");
         }
 
         // email 정규식 검증
-        String emailRegularExpression = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        if (!Pattern.matches(emailRegularExpression, user.getEmail())) {
+        if (!RegularExpression.checkEmail(user.getEmail())) {
             throw new IllegalArgumentException("유효하지 않은 이메일 형식입니다.");
         }
 
         // password 암호화
         Encryption hashPwd = new Encryption();
-        String newPassword = hashPwd.getEncrypt(userData.getPassword(), hashPwd.salt);
+        String newPassword = hashPwd.getEncrypt(userData.getPassword());
 
         userData.encryptedPwd(newPassword);
-        log.info("변경 비밀번호 : {}", newPassword);
 
         userRepository.save(user.toEntity());
         log.info("join service layer 동작 완료");
@@ -84,21 +83,18 @@ public class UserService {
         }
 
         // phone 번호 정규식 검증
-        String phoneRegularExpression = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$";
-        if(!Pattern.matches(phoneRegularExpression, dto.getPhone())) {
+        if(!RegularExpression.checkPhone(dto.getPhone())) {
             throw new IllegalArgumentException("유효하지 않은 전화번호 형식입니다.");
         }
 
         // email 정규식 검증
-        String emailRegularExpression = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        if (!Pattern.matches(emailRegularExpression, dto.getEmail())) {
+        if (!RegularExpression.checkEmail(dto.getEmail())) {
             throw new IllegalArgumentException("유효하지 않은 이메일 형식입니다.");
         }
 
         // password 암호화
         Encryption hashPwd = new Encryption();
-        String newPassword = hashPwd.getEncrypt(dto.getPassword(), hashPwd.salt);
-        log.info("변경 비밀번호 : {}", newPassword);
+        String newPassword = hashPwd.getEncrypt(dto.getPassword());
 
         user.update(newPassword, dto.getNickname(), dto.getName(), dto.getPhone());
 

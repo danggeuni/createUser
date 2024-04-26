@@ -1,4 +1,4 @@
-package com.user.usermanager.controller.dto;
+package com.danggeuni.usermanager.controller.dto;
 
 import lombok.Getter;
 
